@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: SYSTEM }] },
         contents: [{ role: 'user', parts: [{ text: `Write ${count} new questions for the domain "${domain}". Variety seed: ${Math.random()}` }] }],
-        generationConfig: { responseMimeType: 'application/json', temperature: 1, maxOutputTokens: 4000 },
+        generationConfig: { responseMimeType: 'application/json', temperature: 1, maxOutputTokens: 6000, thinkingConfig: { thinkingBudget: 0 } },
       }),
     })
     const d = await r.json()
