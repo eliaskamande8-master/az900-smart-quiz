@@ -4,7 +4,7 @@ Explain in simple language: (1) why the correct answer is right, (2) why the oth
 (3) give two everyday analogies or real-world examples, (4) end with one short check-yourself question. Keep under 250 words.
 Base everything on the public AZ-900 skills outline. Never claim to be official Microsoft content.`
 
-const MODEL_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
+const MODEL_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         generationConfig: {
           maxOutputTokens: 2000,
           temperature: 0.7,
-          thinkingConfig: { thinkingBudget: 0 },
+          thinkingConfig: { thinkingLevel: 'low' },
         },
       }),
     })
