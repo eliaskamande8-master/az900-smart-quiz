@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   try {
     const r = await fetch(URL, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
+      headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY.trim() },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: SYSTEM }] },
         contents: [{ role: 'user', parts: [{ text: `Write ${count} new questions for the domain "${domain}". Variety seed: ${Math.random()}` }] }],
@@ -22,8 +22,12 @@ export default async function handler(req, res) {
       }),
     })
     const d = await r.json()
+    if (d.error) console.error('Gemini error:', d.error)
     const txt = (d.candidates?.[0]?.content?.parts?.[0]?.text || '[]').replace(/```json|```/g, '').trim()
     const list = JSON.parse(txt).map((q) => ({ ...q, domain })).filter((q) => q.options?.length === 4 && q.options.filter((o) => o.ok).length === 1)
     res.status(200).json({ questions: list })
-  } catch (e) { res.status(200).json({ questions: [] }) } // app falls back to the built-in bank
+  } catch (e) {
+    console.error('generate failed:', e.message)
+    res.status(200).json({ questions: [] }) // app falls back to the built-in bank
+  }
 }
