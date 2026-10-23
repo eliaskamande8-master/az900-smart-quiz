@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
     const data = await response.json()
     if (data.error) {
-      console.error('Gemini error:', data.error)
+            console.error('Gemini error:', data.error)
     }
 
     const raw = (data.candidates?.[0]?.content?.parts?.[0]?.text || '[]')
